@@ -1,6 +1,8 @@
 package com.example.expensesmanager.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +16,17 @@ import com.example.expensesmanager.model.Category;
 import com.example.expensesmanager.model.Transaction;
 import com.example.expensesmanager.utils.Constants;
 import com.example.expensesmanager.utils.Helper;
+import com.example.expensesmanager.view.activity.MainActivity;
 
-import java.util.ArrayList;
+import io.realm.RealmResults;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
 
     Context context;
 
-    ArrayList<Transaction> transactions;
+    RealmResults<Transaction> transactions;
 
-    public TransactionsAdapter(Context context, ArrayList<Transaction> transactions) {
+    public TransactionsAdapter(Context context, RealmResults<Transaction> transactions) {
         this.context = context;
         this.transactions = transactions;
     }
@@ -55,6 +58,22 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         holder.binding.categoryIcon.setImageResource(transactionCategory.getCategoryImage());
         holder.binding.categoryIcon.setBackgroundTintList(context.getColorStateList(transactionCategory.getCategoryColor()));
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog deleteDialog = new AlertDialog.Builder(context).create();
+                deleteDialog.setTitle("Delete Transaction");
+                deleteDialog.setMessage("Are you sure to delete this transaction?");
+                deleteDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Yes", (dialogInterface, i) -> {
+                    ((MainActivity) context).viewModel.deleteTransaction(transaction);
+                });
+                deleteDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "No", (dialogInterface, i) -> {
+                    deleteDialog.dismiss();
+                });
+                deleteDialog.show();
+                return false;
+            }
+        });
 
     }
 

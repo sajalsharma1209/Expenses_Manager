@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
 }
-apply(plugin= "realm-android")
+apply(plugin = "realm-android")
 android {
     namespace = "com.example.expensesmanager"
     compileSdk = 33
