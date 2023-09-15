@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#FF9800</color>
+    <color name="yellowDark">#AB612D</color>
+    <color name="testColor">#353535</color>
+    <color name="green">#1FE109</color>
+    <color name="red">#FF0000</color>
+
+<!--    Categories color   -->
+    <color name="category1">#41E913</color>
+    <color name="category2">#FF5722</color>
+    <color name="category3">#673AB7</color>
+    <color name="category4">#2196F3</color>
+    <color name="category5">#FF9800</color>
+    <color name="category6">#FA03FE</color>
+
+
+    <color name="bank_color">#A8004175</color>
+    <color name="cash_color">#A8007502</color>
+    <color name="card_color">#A8750033</color>
+    <color name="default_color">#A8303030</color>
+
+</resources>
