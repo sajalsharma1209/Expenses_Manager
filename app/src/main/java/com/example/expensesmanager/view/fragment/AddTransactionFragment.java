@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,6 +48,7 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         binding = FragmentAddTransactionBinding.inflate(inflater);
         transaction = new Transaction();
+
         binding.incomeBtn.setOnClickListener(view -> {
             binding.incomeBtn.setBackground(getContext().getDrawable(R.drawable.income_selector));
             binding.incomeBtn.setTextColor(getContext().getColor(R.color.green));
@@ -126,18 +128,36 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
         });
 
         binding.saveTransactionBtn.setOnClickListener(view -> {
-            double amount = Double.parseDouble(binding.amount.getText().toString());
-            String note = binding.note.getText().toString();
 
-            if (transaction.getType().equals(Constants.EXPENSE))
-                transaction.setAmount(amount * -1);
-            else
-                transaction.setAmount(amount);
-            transaction.setNote(note);
+            String getincometextcolor = "" + binding.incomeBtn.getCurrentTextColor();
+            String getgreencolor = "" + getResources().getColor(R.color.green);
 
-            ((MainActivity) getActivity()).viewModel.addTransactions(transaction);
-            ((MainActivity) getActivity()).getTransactions();
-            dismiss();
+            String getexpensetextcolor = "" + binding.expenseBtn.getCurrentTextColor();
+            String getredcolor = "" + getResources().getColor(R.color.red);
+
+            if (!(getincometextcolor.equals(getgreencolor) || getexpensetextcolor.equals(getredcolor))) {
+                Toast.makeText(getActivity(), "Please select either income or expense", Toast.LENGTH_SHORT).show();
+            } else {
+
+                if (binding.date.getText().toString().trim().equals("") && binding.category.getText().toString().trim().equals("") && binding.account.getText().toString().trim().equals("") && binding.note.getText().toString().trim().equals("")) {
+                    Toast.makeText((MainActivity) getActivity(), "All fields is mandatory", Toast.LENGTH_SHORT).show();
+                } else {
+                    double amount = Double.parseDouble(binding.amount.getText().toString());
+                    String note = binding.note.getText().toString();
+
+                    if (transaction.getType().equals(Constants.EXPENSE))
+                        transaction.setAmount(amount * -1);
+                    else
+                        transaction.setAmount(amount);
+                    transaction.setNote(note);
+
+                    ((MainActivity) getActivity()).viewModel.addTransactions(transaction);
+                    ((MainActivity) getActivity()).getTransactions();
+                    dismiss();
+
+                }
+            }
+
         });
         return binding.getRoot();
     }
