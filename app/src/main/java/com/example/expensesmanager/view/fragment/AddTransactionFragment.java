@@ -77,6 +77,7 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
                 binding.date.setText(dateToShow);
 
                 transaction.setDate(calendar.getTime());
+
                 transaction.setId(calendar.getTime().getTime());
             });
             datePickerDialog.show();
