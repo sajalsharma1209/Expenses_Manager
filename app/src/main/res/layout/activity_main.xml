@@ -80,7 +80,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Calendar" />
+            android:text="Jump to date" />
 
 <!--        <com.google.android.material.tabs.TabItem-->
 <!--            android:layout_width="wrap_content"-->
@@ -178,19 +178,18 @@
     </LinearLayout>
 
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow"
-        app:itemActiveIndicatorStyle="@style/App.CustomIndicator"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/transactionsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/row_transaction"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_menu" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -207,15 +206,20 @@
         app:tint="@color/white"
         android:contentDescription="Floating Button" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/transactionsList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        tools:listitem="@layout/row_transaction"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:itemActiveIndicatorStyle="@style/App.CustomIndicator"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:menu="@menu/bottom_menu"/>
+
 
     <ImageView
         android:id="@+id/emptyState"

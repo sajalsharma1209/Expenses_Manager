@@ -117,6 +117,32 @@ public class MainViewModel extends AndroidViewModel {
                     .lessThan("date", new Date(endTime.getTime() + (24 * 60 * 60 * 1000)))
                     .sum("amount")
                     .doubleValue();
+        } else if (Constants.SELECTED_TAB == Constants.JUMP_TO_DATE) {
+
+            newTransactions = realm.where(Transaction.class)
+                    .greaterThanOrEqualTo("date", calendar.getTime())
+                    .lessThan("date", new Date(calendar.getTime().getTime() + (24 * 60 * 60 * 1000)))
+                    .findAll();
+
+            income = realm.where(Transaction.class)
+                    .greaterThanOrEqualTo("date", calendar.getTime())
+                    .lessThan("date", new Date(calendar.getTime().getTime() + (24 * 60 * 60 * 1000)))
+                    .equalTo("type", Constants.INCOME)
+                    .sum("amount")
+                    .doubleValue();
+
+            expense = realm.where(Transaction.class)
+                    .greaterThanOrEqualTo("date", calendar.getTime())
+                    .lessThan("date", new Date(calendar.getTime().getTime() + (24 * 60 * 60 * 1000)))
+                    .equalTo("type", Constants.EXPENSE)
+                    .sum("amount")
+                    .doubleValue();
+
+            total = realm.where(Transaction.class)
+                    .greaterThanOrEqualTo("date", calendar.getTime())
+                    .lessThan("date", new Date(calendar.getTime().getTime() + (24 * 60 * 60 * 1000)))
+                    .sum("amount")
+                    .doubleValue();
         }
 
         totalIncome.setValue(income);
