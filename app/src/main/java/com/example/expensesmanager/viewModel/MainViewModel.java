@@ -24,7 +24,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<Double> totalAmount = new MutableLiveData<>();
 
     Realm realm;
-    Calendar calendar;
+    private Calendar calendar;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -73,35 +73,48 @@ public class MainViewModel extends AndroidViewModel {
                     .doubleValue();
 
         } else if (Constants.SELECTED_TAB == Constants.MONTHLY) {
-            calendar.set(Calendar.DAY_OF_MONTH, 0);
 
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
             Date startTime = calendar.getTime();
 
             calendar.add(Calendar.MONTH, 1);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
             Date endTime = calendar.getTime();
+
+//            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+//            Date startTime = calendar.getTime();
+//            Toast.makeText(getApplication(), "Start time : "+startTime, Toast.LENGTH_SHORT).show();
+//
+//            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+//            Date endTime = calendar.getTime();
+//            Toast.makeText(getApplication(), "End time : "+endTime, Toast.LENGTH_SHORT).show();
 
             newTransactions = realm.where(Transaction.class)
                     .greaterThanOrEqualTo("date", startTime)
-                    .lessThan("date", endTime)
+                    .lessThan("date", new Date(endTime.getTime() + (24 * 60 * 60 * 1000)))
                     .findAll();
 
             income = realm.where(Transaction.class)
                     .greaterThanOrEqualTo("date", startTime)
-                    .lessThan("date", endTime)
+                    .lessThan("date", new Date(endTime.getTime() + (24 * 60 * 60 * 1000)))
                     .equalTo("type", Constants.INCOME)
                     .sum("amount")
                     .doubleValue();
 
             expense = realm.where(Transaction.class)
                     .greaterThanOrEqualTo("date", startTime)
-                    .lessThan("date", endTime)
+                    .lessThan("date", new Date(endTime.getTime() + (24 * 60 * 60 * 1000)))
                     .equalTo("type", Constants.EXPENSE)
                     .sum("amount")
                     .doubleValue();
 
             total = realm.where(Transaction.class)
                     .greaterThanOrEqualTo("date", startTime)
-                    .lessThan("date", endTime)
+                    .lessThan("date", new Date(endTime.getTime() + (24 * 60 * 60 * 1000)))
                     .sum("amount")
                     .doubleValue();
         }
@@ -110,6 +123,7 @@ public class MainViewModel extends AndroidViewModel {
         totalExpense.setValue(expense);
         totalAmount.setValue(total);
         transactions.setValue(newTransactions);
+
 //        RealmResults<Transaction> newTransactions = realm.where(Transaction.class)
 //                .equalTo("date", calendar.getTime())
 //                .findAll();

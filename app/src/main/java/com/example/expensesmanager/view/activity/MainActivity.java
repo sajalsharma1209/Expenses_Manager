@@ -3,11 +3,14 @@ package com.example.expensesmanager.view.activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.adapter.TransactionsAdapter;
@@ -20,21 +23,14 @@ import com.example.expensesmanager.viewModel.MainViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     public MainViewModel viewModel;
     ActivityMainBinding binding;
-    Calendar calendar;
-    /*
-    daily = 0
-    monthly = 1
-    calendar = 2
-    summary = 3
-    notes = 4
-    */
-    int selectedTab = 0;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        Constants.setCategories();
-
         calendar = Calendar.getInstance();
         updateDate();
+
+        Constants.setCategories();
 
         binding.nextDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (Constants.SELECTED_TAB == Constants.DAILY)
                     calendar.add(Calendar.DATE, 1);
-                else if (Constants.SELECTED_TAB == Constants.MONTHLY )
+                else if (Constants.SELECTED_TAB == Constants.MONTHLY)
                     calendar.add(Calendar.MONTH, 1);
+
                 updateDate();
             }
         });
@@ -118,15 +115,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getTransactions(calendar);
+        //  viewModel.getTransactions(calendar);
+
+       binding.transactionsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+           @Override
+           public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+               super.onScrollStateChanged(recyclerView, newState);
+           }
+       });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if (tab.getText().equals("Monthly"))
-                    Constants.SELECTED_TAB = 1;
+                    Constants.SELECTED_TAB = Constants.MONTHLY;
                 else if (tab.getText().equals("Daily")) {
-                    Constants.SELECTED_TAB = 0;
+                    Constants.SELECTED_TAB = Constants.DAILY;
 
                 }
 
@@ -157,7 +161,11 @@ public class MainActivity extends AppCompatActivity {
             binding.currentDate.setText(Helper.formatDate(calendar.getTime()));
         else if (Constants.SELECTED_TAB == Constants.MONTHLY)
             binding.currentDate.setText(Helper.formatDateByMonth(calendar.getTime()));
+//        Toast.makeText(this, "" + new Date(calendar.getTime().getTime()), Toast.LENGTH_SHORT).show();
         viewModel.getTransactions(calendar);
+
+//        Toast.makeText(this, "" + new Date(calendar.getTime().getTime()), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

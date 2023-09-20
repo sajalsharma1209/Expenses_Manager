@@ -41,6 +41,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
         Transaction transaction = transactions.get(position);
 
+        holder.binding.note.setText("Note: " + transaction.getNote().substring(0, 1).toUpperCase() + transaction.getNote().substring(1));
         holder.binding.transactionAmount.setText("" + transaction.getAmount());
 
         if (transaction.getType().equals(Constants.INCOME))

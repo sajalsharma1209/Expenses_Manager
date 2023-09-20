@@ -31,6 +31,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Business"
+            android:textSize="12sp"
+            android:textColor="@color/black"/>
+
+        <TextView
             android:id="@+id/transactionCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
